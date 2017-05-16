@@ -1,0 +1,182 @@
+/**
+ * Copyright 2017 Keid
+ */
+package com.keidrun.qstackoverflow.app
+
+import com.github.kevinsawicki.http.HttpRequest
+import com.keidrun.qstackoverflow.lib.Query
+import com.keidrun.qstackoverflow.lib.SOParams
+import com.keidrun.qstackoverflow.lib.SOQuery
+import com.keidrun.qstackoverflow.lib.SOSerector
+import org.apache.commons.cli.*
+import kotlin.system.exitProcess
+
+/**
+ * Stack Overflow Search CLI.
+ *
+ * @author Keid
+ */
+fun main(args: Array<String>) {
+
+    try {
+        val cmd: CommandLine = DefaultParser().parse(buildOptions(), args)
+
+        showArgs(cmd)
+
+        val inTitle: String =
+                if (cmd.args.isNotEmpty()) cmd.args[0]
+                else throw IllegalArgumentException("Title is required.")
+
+        val params: SOParams = buildParams(inTitle, cmd)
+        val query: Query<SOParams> = SOQuery(params)
+
+        println("request url:")
+        println("    ${query.url}")
+        println()
+
+        println("response:")
+        println("    ${query.search(params)}")
+
+        exitProcess(0)
+
+    } catch (e: HttpRequest.HttpRequestException) {
+        println("Error: Internet desconnected.")
+        println("Description: $e")
+        exitProcess(1)
+    } catch (e: MissingOptionException) {
+        println("Error: Bad options.")
+        println("Description: $e")
+        exitProcess(1)
+    } catch (e: IllegalArgumentException) {
+        println("Error: Bad arguments.")
+        println("Description: $e")
+        exitProcess(1)
+    } catch (e: Exception) {
+        println("Fatal: An unexpected error occurred.")
+        println("Description: $e")
+        exitProcess(1)
+    }
+
+}
+
+fun buildOptions(): Options {
+
+    var options: Options = Options()
+    options.addOption(Option.builder("p")
+            .hasArg(true)
+            .required(false)
+            .argName("pageOpt")
+            .desc("set a \"page\" parameter")
+            .longOpt("page")
+            .build())
+    options.addOption(Option.builder("z")
+            .hasArg(true)
+            .required(false)
+            .argName("pageSizeOpt")
+            .desc("set a \"pagesize\" parameter")
+            .longOpt("pagesize")
+            .build())
+    options.addOption(Option.builder("f")
+            .hasArg(true)
+            .required(false)
+            .argName("fromDateOpt")
+            .desc("set a \"fromdate\" parameter, a format must be \"${SOSerector.Format.DATE}\"")
+            .longOpt("fromdate")
+            .build())
+    options.addOption(Option.builder("t")
+            .hasArg(true)
+            .required(false)
+            .argName("toDateOpt")
+            .desc("set a \"todate\" parameter, a format must be \"${SOSerector.Format.DATE}\"")
+            .longOpt("todate")
+            .build())
+    options.addOption(Option.builder("o")
+            .hasArg(true)
+            .required(false)
+            .argName("orderOpt")
+            .desc("set a \"order\" parameter, \"desc\"(default) or \"asc\"")
+            .longOpt("order")
+            .build())
+    options.addOption(Option.builder("min")
+            .hasArg(true)
+            .required(false)
+            .argName("minDateOpt")
+            .desc("set a \"min\" date parameter, a format must be \"${SOSerector.Format.DATE}\"")
+            .longOpt("mindate")
+            .build())
+    options.addOption(Option.builder("max")
+            .hasArg(true)
+            .required(false)
+            .argName("maxDateOpt")
+            .desc("set a \"max\" date parameter, a format must be \"${SOSerector.Format.DATE}\"")
+            .longOpt("maxdate")
+            .build())
+    options.addOption(Option.builder("s")
+            .hasArg(true)
+            .required(false)
+            .argName("sortOpt")
+            .desc("set a \"sort\" parameter.")
+            .longOpt("sort")
+            .build())
+    options.addOption(Option.builder("t")
+            .hasArg(true)
+            .required(false)
+            .argName("taggedOpt")
+            .desc("set a \"tagged\" parameter.")
+            .longOpt("tagged")
+            .build())
+    options.addOption(Option.builder("n")
+            .hasArg(true)
+            .required(false)
+            .argName("noTaggedOpt")
+            .desc("set a \"notagged\" parameter")
+            .longOpt("notagged")
+            .build())
+    options.addOption(Option.builder("l")
+            .hasArg(true)
+            .required(false)
+            .argName("siteOpt")
+            .desc("access the language's site, \"en\"(default) or \"jp\"")
+            .longOpt("lang")
+            .build())
+
+    return options
+}
+
+fun buildParams(inTitle: String, cmd: CommandLine): SOParams {
+
+    val params: SOParams =
+            if (cmd.hasOption("t")) SOParams(inTitle, cmd.getOptionValue("t")) else SOParams(inTitle, "")
+
+    if (cmd.hasOption("p")) params.page = cmd.getOptionValue("p").toInt()
+    if (cmd.hasOption("z")) params.pageSize = cmd.getOptionValue("z").toInt()
+    if (cmd.hasOption("f")) params.fromDate = params.parseDate(cmd.getOptionValue("f"))
+    if (cmd.hasOption("t")) params.toDate = params.parseDate(cmd.getOptionValue("t"))
+    if (cmd.hasOption("o")) params.order = SOSerector.Order.DESC.serectorOf(cmd.getOptionValue("o"))
+    if (cmd.hasOption("min")) params.minDate = params.parseDate(cmd.getOptionValue("min"))
+    if (cmd.hasOption("max")) params.maxDate = params.parseDate(cmd.getOptionValue("max"))
+    if (cmd.hasOption("s")) params.sort = SOSerector.Sort.ACTIVITY.serectorOf(cmd.getOptionValue("s"))
+    if (cmd.hasOption("n")) params.noTagged = cmd.getOptionValue("n")
+    if (cmd.hasOption("l")) params.site = SOSerector.Site.ENGLISH.serectorOf(cmd.getOptionValue("l"))
+
+    return params
+}
+
+fun showArgs(cmd: CommandLine) {
+
+    println("arguments: ")
+    if (cmd.args.isNotEmpty()) println("    title: \"${cmd.args[0]}\"") else println("    title:\"\"")
+    if (cmd.hasOption("p")) println("    page: \"${cmd.getOptionValue("p")}\"")
+    if (cmd.hasOption("z")) println("    pagesize: \"${cmd.getOptionValue("s")}\"")
+    if (cmd.hasOption("f")) println("    fromdate: \"${cmd.getOptionValue("f")}\"")
+    if (cmd.hasOption("t")) println("    todate: \"${cmd.getOptionValue("t")}\"")
+    if (cmd.hasOption("o")) println("    order: \"${cmd.getOptionValue("o")}\"")
+    if (cmd.hasOption("min")) println("    mindate: \"${cmd.getOptionValue("min")}\"")
+    if (cmd.hasOption("max")) println("    maxdate: \"${cmd.getOptionValue("max")}\"")
+    if (cmd.hasOption("s")) println("    sort: \"${cmd.getOptionValue("s")}\"")
+    if (cmd.hasOption("t")) println("    tagged: \"${cmd.getOptionValue("t")}\"")
+    if (cmd.hasOption("n")) println("    notagged: \"${cmd.getOptionValue("n")}\"")
+    if (cmd.hasOption("l")) println("    lang: \"${cmd.getOptionValue("l")}\"")
+    println()
+
+}

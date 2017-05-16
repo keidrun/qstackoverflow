@@ -12,10 +12,10 @@ import java.util.Date
  *
  * @author Keid
  */
-class SOParams(val _tagged: String, val _inTitle: String) {
+class SOParams(val _inTitle: String, val _tagged: String) {
 
     init {
-        require(_tagged.isNotEmpty() || _inTitle.isNotEmpty())
+        require(_inTitle.isNotEmpty() || _tagged.isNotEmpty())
     }
 
     var page: Int? = null

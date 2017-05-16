@@ -4,6 +4,8 @@
 package com.keidrun.qstackoverflow.lib
 
 import com.github.kevinsawicki.http.HttpRequest
+import org.apache.commons.codec.net.URLCodec
+import java.nio.charset.StandardCharsets
 
 /**
  * Stack Overflow API's Query.
@@ -20,18 +22,20 @@ class SOQuery(params: SOParams, val apiVersion: String) : Query<SOParams> {
         url = buildUrl(params)
     }
 
-    fun buildUrl(params: SOParams): String {
+    private fun buildUrl(params: SOParams): String {
 
         var searchUrl: String = "https://api.stackexchange.com/$apiVersion/search"
+        val codec: URLCodec = URLCodec(StandardCharsets.UTF_8.toString())
+
         var isFirst: Boolean = true
         for (param in params.toMap()) {
-            if (isFirst) {
-                searchUrl += "?${param.key}=${param.value}"
-                isFirst = false
-            } else {
-                searchUrl += "&${param.key}=${param.value}"
-            }
+            searchUrl += if (isFirst) "?" else "&"
+            isFirst = false
+
+            searchUrl += if (param.value is String) "${param.key}=${codec.encode(param.value)}"
+            else "${param.key}=${param.value}"
         }
+
         return searchUrl
 
     }

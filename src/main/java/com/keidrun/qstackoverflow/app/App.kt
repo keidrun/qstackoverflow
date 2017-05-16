@@ -31,9 +31,7 @@ fun main(args: Array<String>) {
         val varboseFlag: Boolean = cmd.hasOption("v")
         if (varboseFlag) showArgs(cmd)
 
-        val inTitle: String =
-                if (cmd.args.isNotEmpty()) cmd.args[0]
-                else throw IllegalArgumentException("Title is required.")
+        val inTitle: String = cmd.args[0]
 
         val params: SOParams = buildParams(inTitle, cmd)
         val query: Query<SOParams> = SOQuery(params)
@@ -60,16 +58,13 @@ fun main(args: Array<String>) {
         for (arg in args) print("$arg ")
         println()
         exitProcess(1)
-    } catch (e: IllegalArgumentException) {
-        print("Unknown arguments: ")
-        for (arg in args) print("$arg ")
-        println()
-        exitProcess(1)
     } catch (e: HttpRequest.HttpRequestException) {
-        println("Internet desconnected")
+        println("Internet desconnected:")
+        println("Error Discription -> $e")
         exitProcess(1)
     } catch (e: Exception) {
-        println("An unexpected error occurred")
+        println("An unexpected error occurred:")
+        println("Error Discription -> $e")
         exitProcess(1)
     }
 

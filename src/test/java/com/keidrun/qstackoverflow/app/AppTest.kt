@@ -37,7 +37,7 @@ class AppTest {
         if (ping()) exit.expectSystemExitWithStatus(0) else exit.expectSystemExit()
         val args: Array<String> = arrayOf(
                 "テスト",
-                "-l", "jp",
+                "-l", "ja",
                 "-v"
         )
 

@@ -46,7 +46,7 @@ class SOParamsTest {
         val intitle: String = ""
         val tagged: String = ""
 
-        val actual: SOParams = SOParams(intitle, tagged)
+        SOParams(intitle, tagged)
     }
 
     @Test fun toMapWithConstructorArgs() {

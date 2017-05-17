@@ -195,7 +195,7 @@ fun showArgs(cmd: CommandLine) {
     if (cmd.hasOption("min")) println("    mindate: \"${cmd.getOptionValue("min")}\"")
     if (cmd.hasOption("max")) println("    maxdate: \"${cmd.getOptionValue("max")}\"")
     if (cmd.hasOption("s")) println("    sort: \"${cmd.getOptionValue("s")}\"")
-    if (cmd.hasOption("t")) println("    tagged: \"${cmd.getOptionValue("t")}\"")
+    if (cmd.hasOption("g")) println("    tagged: \"${cmd.getOptionValue("g")}\"")
     if (cmd.hasOption("n")) println("    notagged: \"${cmd.getOptionValue("n")}\"")
     if (cmd.hasOption("l")) println("    lang: \"${cmd.getOptionValue("l")}\"")
     println()

@@ -1,13 +1,13 @@
 // kotlin and bintary
 buildscript {
-    ext.kotlin_version = '1.1.2-2' // kotlin
+    ext.kotlin_version = '1.1.2-2' // for kotlin
     repositories {
-        mavenCentral() // kotlin
-        jcenter() // bintary
+        mavenCentral() // for kotlin
+        jcenter() // for bintary
     }
     dependencies {
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" //kotlin
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3" // bintary
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version" // for kotlin
+        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:1.7.3" // for bintary
     }
 }
 apply plugin: 'kotlin'
@@ -17,15 +17,27 @@ apply plugin: 'application'
 apply plugin: 'jacoco'
 apply plugin: "maven-publish"
 
-mainClassName = 'com.keidrun.qstackoverflow.app.AppKt'
-
-defaultTasks 'run'
-
 group "com.keidrun.qstackoverflow"
 //version = "0.0.1"  //gradle -Pversion=0.0.1 bintrayUpload
 def tag = "v${project.version}"
 def productName = 'Stack Overflow\'s Search CLI'
 description = "${project.name} build of the version ${project.version}"
+
+def appName = 'sos'
+// def appVersion = project.version
+mainClassName = 'com.keidrun.qstackoverflow.app.AppKt'
+defaultTasks 'run'
+startScripts {
+    applicationName = appName
+}
+distZip {
+    baseName = appName
+    // skip parent directory
+    eachFile { file ->
+        String path = file.relativePath
+        file.setPath(path.substring(path.indexOf("/")+1,path.length()))
+    }
+}
 
 def defaultEncoding = 'UTF-8'
 
@@ -107,7 +119,7 @@ publishing {
                 final thisPom = {
                     packaging "jar"
                     name "$productName"
-                    url "https://github.com/keidrun/l2l-BatchToBash-plugin"
+                    url "https://github.com/keidrun/qstackoverflow"
                     description "${project.description}"
                     licenses {
                         license {
@@ -117,8 +129,8 @@ publishing {
                         }
                     }
                     scm {
-                        url "https://github.com/keidrun/l2l-BatchToBash-plugin"
-                        connection "https://github.com/keidrun/l2l-BatchToBash-plugin"
+                        url "https://github.com/keidrun/qstackoverflow"
+                        connection "https://github.com/keidrun/qstackoverflow"
                     }
                     developers {
                         developer {

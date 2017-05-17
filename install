@@ -1,0 +1,36 @@
+#!/bin/sh
+
+readonly RELEASE_VERSION="0.0.3"
+
+readonly ROOT_DIR=".keidrun"
+readonly APP_NAME="sos"
+readonly ZIP_NAME="$APP_NAME-$RELEASE_VERSION.zip"
+readonly ZIP_BUILD_DIR="build/distributions"
+
+readonly APP_DIR="$ROOT_DIR/$APP_NAME"
+readonly TARGET_DIR="$APP_DIR/$RELEASE_VERSION"
+readonly LINK_PATH="/usr/local/bin/$APP_NAME"
+
+echo "===> This script will install:"
+echo "$LINK_PATH"
+
+echo "==> Downloading and installing $APP_NAME..."
+
+git clone https://github.com/keidrun/qstackoverflow
+cd qstackoverflow
+
+./gradlew -Pversion=$RELEASE_VERSION distZip && (
+
+if [ ! -e ~/$TARGET_DIR ]; then
+    mkdir -pv ~/$TARGET_DIR
+fi
+cp -v $ZIP_BUILD_DIR/$ZIP_NAME ~/$TARGET_DIR
+unzip ~/$TARGET_DIR/$ZIP_NAME -d ~/$TARGET_DIR
+rm ~/$TARGET_DIR/$ZIP_NAME
+ln -sv ~/$TARGET_DIR/bin/$APP_NAME $LINK_PATH
+
+echo "===> Installation successful!"
+echo "===> Next steps"
+echo "Run '$APP_NAME -h' to get started"
+
+)

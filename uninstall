@@ -1,0 +1,24 @@
+#!/bin/sh
+
+readonly RELEASE_VERSION="0.0.3"
+
+readonly ROOT_DIR=".keidrun"
+readonly APP_NAME="sos"
+
+readonly APP_DIR="$ROOT_DIR/$APP_NAME"
+readonly TARGET_DIR="$APP_DIR/$RELEASE_VERSION"
+readonly LINK_PATH="/usr/local/bin/$APP_NAME"
+
+echo "===> This script will uninstall:"
+echo "$LINK_PATH"
+
+unlink $LINK_PATH
+rm -rf ~/$TARGET_DIR
+if [ -z "$(ls -A ~/$APP_DIR)" ]; then
+  rm -rf ~/$APP_DIR
+fi
+if [ -z "$(ls -A ~/$ROOT_DIR)" ]; then
+  rm -rf ~/$ROOT_DIR
+fi
+
+echo "===> Uninstallation successful!"

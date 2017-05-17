@@ -25,7 +25,7 @@ fun main(args: Array<String>) {
 
         val formatter: HelpFormatter = HelpFormatter()
         if (cmd.args.isEmpty() || (cmd.args.size == 1 && cmd.hasOption("h"))) {
-            formatter.printHelp("sos [title] [option...]", options);
+            formatter.printHelp("sos title [option...]", options);
             exitProcess(0)
         }
 

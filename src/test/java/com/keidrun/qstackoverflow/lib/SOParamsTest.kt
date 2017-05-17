@@ -134,9 +134,13 @@ class SOParamsTest {
         sut.page = 2
         sut.pageSize = 39
         sut.fromDate = sut.parseDate("2015-1-1")
+        val expectedFromDate: String = sut.parseDate("2015-1-1")?.time?.div(1000).toString()
         sut.toDate = sut.parseDate("2017-1-1")
+        val expectedToDate: String = sut.parseDate("2017-1-1")?.time?.div(1000).toString()
         sut.minDate = sut.parseDate("2014-1-1")
+        val expectedMinDate: String = sut.parseDate("2014-1-1")?.time?.div(1000).toString()
         sut.maxDate = sut.parseDate("2018-1-1")
+        val expectedMaxDate: String = sut.parseDate("2018-1-1")?.time?.div(1000).toString()
         sut.noTagged = "scala"
 
         val actual: Map<String, String> = sut.toMap()
@@ -152,10 +156,10 @@ class SOParamsTest {
         // check values
         assertEquals(expected = "2", actual = actual.get("page"))
         assertEquals(expected = "39", actual = actual.get("pagesize"))
-        assertEquals(expected = "1420038000", actual = actual.get("fromdate"))
-        assertEquals(expected = "1483196400", actual = actual.get("todate"))
-        assertEquals(expected = "1388502000", actual = actual.get("min"))
-        assertEquals(expected = "1514732400", actual = actual.get("max"))
+        assertEquals(expected = expectedFromDate, actual = actual.get("fromdate"))
+        assertEquals(expected = expectedToDate, actual = actual.get("todate"))
+        assertEquals(expected = expectedMinDate, actual = actual.get("min"))
+        assertEquals(expected = expectedMaxDate, actual = actual.get("max"))
         assertEquals(expected = "scala", actual = actual.get("notagged"))
     }
 

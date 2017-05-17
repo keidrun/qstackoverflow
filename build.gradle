@@ -38,6 +38,7 @@ tasks.withType(JavaCompile) {
 
 repositories {
     mavenCentral()
+    jcenter()
 }
 
 dependencies {
@@ -45,6 +46,7 @@ dependencies {
     compile 'com.github.kevinsawicki:http-request:6.0'
     compile 'commons-cli:commons-cli:1.4'
     compile 'commons-codec:commons-codec:1.10'
+    compile 'org.json:json:20160810'
     testCompile 'junit:junit:4.12'
     testCompile "org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version"
     testCompile 'com.github.stefanbirkner:system-rules:1.16.0'

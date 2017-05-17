@@ -9,6 +9,7 @@ import com.keidrun.qstackoverflow.lib.SOParams
 import com.keidrun.qstackoverflow.lib.SOQuery
 import com.keidrun.qstackoverflow.lib.SOSerector
 import org.apache.commons.cli.*
+import org.json.JSONObject
 import kotlin.system.exitProcess
 
 /**
@@ -24,7 +25,7 @@ fun main(args: Array<String>) {
 
         val formatter: HelpFormatter = HelpFormatter()
         if (cmd.args.isEmpty() || (cmd.args.size == 1 && cmd.hasOption("h"))) {
-            formatter.printHelp("qstackoverflow [title] [option...]", options);
+            formatter.printHelp("sos [title] [option...]", options);
             exitProcess(0)
         }
 
@@ -42,9 +43,12 @@ fun main(args: Array<String>) {
             println("${query.url}")
             println()
             println("response:")
-            print("    ")
         }
-        println("${query.search(params)}")
+
+        val res: String = query.search(params)
+
+        val json = JSONObject(res)
+        if (cmd.hasOption("r")) println(json.toString()) else println(json.toString(4))
 
         exitProcess(0)
 
@@ -160,6 +164,11 @@ fun buildOptions(): Options {
             .desc("show help")
             .longOpt("help")
             .build())
+    options.addOption(Option.builder("r")
+            .required(false)
+            .desc("show raw json")
+            .longOpt("raw")
+            .build())
 
     return options
 }
@@ -198,6 +207,9 @@ fun showArgs(cmd: CommandLine) {
     if (cmd.hasOption("g")) println("    tagged: \"${cmd.getOptionValue("g")}\"")
     if (cmd.hasOption("n")) println("    notagged: \"${cmd.getOptionValue("n")}\"")
     if (cmd.hasOption("l")) println("    lang: \"${cmd.getOptionValue("l")}\"")
+    // flag
+    if (cmd.hasOption("v")) println("    verbose: \"yes\"")
+    if (cmd.hasOption("r")) println("    raw: \"yes\"")
     println()
 
 }

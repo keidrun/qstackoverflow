@@ -134,6 +134,17 @@ class AppTest {
         main(args)
     }
 
+    @Test fun rawJson() {
+        if (ping()) exit.expectSystemExitWithStatus(0) else exit.expectSystemExit()
+        val args: Array<String> = arrayOf(
+                "testing",
+                "-v",
+                "-r"
+        )
+
+        main(args)
+    }
+
     @Test fun parseError() {
         exit.expectSystemExitWithStatus(1)
         val args: Array<String> = arrayOf(

@@ -12,8 +12,10 @@ class AppTest {
 
     fun ping(): Boolean {
         try {
+            // If internet connected or disconnected.
             return ProcessBuilder("ping", "-c", "1", "-t", "3000", "api.stackexchange.com").start().waitFor() == 0
         } catch (e: IOException) {
+            // Assume that internet connected if it failed.
             return true
         }
     }
@@ -63,7 +65,7 @@ class AppTest {
                 "-min", "2014-1-1",
                 "-max", "2018-1-1",
                 "-s", "desc",
-                "-t", "javascript",
+                "-g", "javascript",
                 "-n", "Node.js",
                 "-l", "en",
                 "-v"
@@ -84,9 +86,9 @@ class AppTest {
                 "-min", "2014-1-1",
                 "-max", "2018-1-1",
                 "-s", "desc",
-                "-t", "ジャバ",
+                "-g", "ジャバ",
                 "-n", "ノード",
-                "-l", "jp",
+                "-l", "ja",
                 "-v"
         )
 
@@ -105,7 +107,7 @@ class AppTest {
                 "-min", "2014-1-1",
                 "-max", "2018-1-1",
                 "-s", "desc",
-                "-t", "javascript",
+                "-g", "javascript",
                 "-n", "Node.js",
                 "-l", "ja",
                 "hoge",

@@ -129,7 +129,7 @@ fun buildOptions(): Options {
             .desc("set a \"sort\" parameter, \"activity\"(default) or \"votes\" or \"creation\" or \"relevance\"")
             .longOpt("sort")
             .build())
-    options.addOption(Option.builder("t")
+    options.addOption(Option.builder("g")
             .hasArg(true)
             .required(false)
             .argName("tagged")
@@ -147,7 +147,7 @@ fun buildOptions(): Options {
             .hasArg(true)
             .required(false)
             .argName("lang")
-            .desc("access the language's site, \"en\"(default) or \"jp\"")
+            .desc("access the language's site, \"en\"(default) or \"ja\"")
             .longOpt("lang")
             .build())
     options.addOption(Option.builder("v")
@@ -167,7 +167,7 @@ fun buildOptions(): Options {
 fun buildParams(inTitle: String, cmd: CommandLine): SOParams {
 
     val params: SOParams =
-            if (cmd.hasOption("t")) SOParams(inTitle, cmd.getOptionValue("t")) else SOParams(inTitle, "")
+            if (cmd.hasOption("g")) SOParams(inTitle, cmd.getOptionValue("g")) else SOParams(inTitle, "")
 
     if (cmd.hasOption("p")) params.page = cmd.getOptionValue("p").toInt()
     if (cmd.hasOption("z")) params.pageSize = cmd.getOptionValue("z").toInt()

@@ -58,7 +58,7 @@ interface SOSerector {
 
     enum class Site(val value: String, val siteName: String) : SOSerector {
         ENGLISH("en", "stackoverflow"),
-        JAPANESE("jp", "ja.stackoverflow");
+        JAPANESE("ja", "ja.stackoverflow");
 
         override fun toString(): String {
             return this.value

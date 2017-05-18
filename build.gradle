@@ -24,7 +24,6 @@ def productName = 'Stack Overflow\'s Search CLI'
 description = "${project.name} build of the version ${project.version}"
 
 def appName = 'sos'
-// def appVersion = project.version
 mainClassName = 'com.keidrun.qstackoverflow.app.AppKt'
 defaultTasks 'run'
 startScripts {

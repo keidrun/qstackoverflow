@@ -5,6 +5,14 @@
 
 Stack Overflow's Search CLI.
 
+## Description
+Provide the 'sos' command to search the stack overflow's title.
+
+For example, if you want to search how to use kotlin, type the following command:
+```
+$ sos 'how to use kotlin'
+```
+
 ## Install
 ```
 $ curl -fsSL https://raw.githubusercontent.com/keidrun/qstackoverflow/master/install | bash
@@ -12,6 +20,7 @@ $ curl -fsSL https://raw.githubusercontent.com/keidrun/qstackoverflow/master/ins
 
 ## Usage
 ```
+$ sos -h
 usage: sos title [option...]
  -f,--fromdate <fromdate>   set a "fromdate" parameter, a format must be
                             "yyyy-MM-dd"
@@ -35,6 +44,8 @@ usage: sos title [option...]
  -v,--verbose               show verbose
  -z,--pagesize <pagesize>   set a "pagesize" parameter
 ```
+
+In detail, see [the stackexchange's search api](https://api.stackexchange.com/docs/search "search").
 
 ## Uninstall
 ```

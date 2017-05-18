@@ -4,12 +4,10 @@
 package com.keidrun.qstackoverflow.app
 
 import com.github.kevinsawicki.http.HttpRequest
-import com.keidrun.qstackoverflow.lib.Query
-import com.keidrun.qstackoverflow.lib.SOParams
-import com.keidrun.qstackoverflow.lib.SOQuery
-import com.keidrun.qstackoverflow.lib.SOSerector
+import com.keidrun.qstackoverflow.lib.*
+import com.squareup.moshi.JsonAdapter
+import com.squareup.moshi.Moshi
 import org.apache.commons.cli.*
-import org.json.JSONObject
 import kotlin.system.exitProcess
 
 /**
@@ -25,7 +23,7 @@ fun main(args: Array<String>) {
 
         val formatter: HelpFormatter = HelpFormatter()
         if (cmd.args.isEmpty() || (cmd.args.size == 1 && cmd.hasOption("h"))) {
-            formatter.printHelp("sos title [option...]", options);
+            formatter.printHelp("sos [title] [option...]", options);
             exitProcess(0)
         }
 
@@ -38,17 +36,25 @@ fun main(args: Array<String>) {
         val query: Query<SOParams> = SOQuery(params)
 
         if (varboseFlag) {
-            println("request url:")
+            println("url:")
             print("    ")
             println("${query.url}")
             println()
-            println("response:")
+            println("results:")
         }
 
         val res: String = query.search(params)
 
-        val json = JSONObject(res)
-        if (cmd.hasOption("r")) println(json.toString()) else println(json.toString(4))
+        if (cmd.hasOption("r")) {
+            println(res)
+        } else {
+            val moshi = Moshi.Builder().build()
+            val adapter: JsonAdapter<SOItems> = moshi.adapter(SOItems::class.java)
+            val itemsObj: SOItems = adapter.fromJson(res) as SOItems
+            for (item in itemsObj.items) {
+                println("[${item.question_id}][${item.title}][${item.link}]")
+            }
+        }
 
         exitProcess(0)
 
@@ -63,7 +69,7 @@ fun main(args: Array<String>) {
         println()
         exitProcess(1)
     } catch (e: HttpRequest.HttpRequestException) {
-        println("Internet desconnected:")
+        println("Internet disconnected:")
         println("Error Discription -> $e")
         exitProcess(1)
     } catch (e: Exception) {

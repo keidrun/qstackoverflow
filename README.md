@@ -21,7 +21,7 @@ $ curl -fsSL https://raw.githubusercontent.com/keidrun/qstackoverflow/master/ins
 ## Usage
 ```
 $ sos -h
-usage: sos title [option...]
+usage: sos [title] [option...]
  -f,--fromdate <fromdate>   set a "fromdate" parameter, a format must be
                             "yyyy-MM-dd"
  -g,--tagged <tagged>       set a "tagged" parameter.

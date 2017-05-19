@@ -51,8 +51,15 @@ fun main(args: Array<String>) {
             val moshi = Moshi.Builder().build()
             val adapter: JsonAdapter<SOItems> = moshi.adapter(SOItems::class.java)
             val itemsObj: SOItems = adapter.fromJson(res) as SOItems
-            for (item in itemsObj.items) {
-                println("[${item.question_id}][${item.title}][${item.link}]")
+            if (cmd.hasOption("c")) {
+                for (item in itemsObj.items) {
+                    println("\"${item.question_id}\",\"${item.title}\",\"${item.link}\"")
+                }
+            } else {
+                for (item in itemsObj.items) {
+                    println("[${item.question_id}][${item.title}][${item.link}]")
+                }
+                println("Total: ${itemsObj.items.size} quiestions.")
             }
         }
 
@@ -175,6 +182,11 @@ fun buildOptions(): Options {
             .desc("show raw json")
             .longOpt("raw")
             .build())
+    options.addOption(Option.builder("c")
+            .required(false)
+            .desc("show csv format")
+            .longOpt("csv")
+            .build())
 
     return options
 }
@@ -214,8 +226,9 @@ fun showArgs(cmd: CommandLine) {
     if (cmd.hasOption("n")) println("    notagged: \"${cmd.getOptionValue("n")}\"")
     if (cmd.hasOption("l")) println("    lang: \"${cmd.getOptionValue("l")}\"")
     // flag
-    if (cmd.hasOption("v")) println("    verbose: \"yes\"")
-    if (cmd.hasOption("r")) println("    raw: \"yes\"")
+    if (cmd.hasOption("v")) println("    verbose: yes")
+    if (cmd.hasOption("r")) println("    raw: yes")
+    else if (cmd.hasOption("c")) println("    csv: yes")
     println()
 
 }

@@ -145,6 +145,17 @@ class AppTest {
         main(args)
     }
 
+    @Test fun csvFormat() {
+        if (ping()) exit.expectSystemExitWithStatus(0) else exit.expectSystemExit()
+        val args: Array<String> = arrayOf(
+                "testing",
+                "-v",
+                "-c"
+        )
+
+        main(args)
+    }
+
     @Test fun parseError() {
         exit.expectSystemExitWithStatus(1)
         val args: Array<String> = arrayOf(

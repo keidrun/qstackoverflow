@@ -22,7 +22,7 @@ fun main(args: Array<String>) {
         val cmd: CommandLine = DefaultParser().parse(options, args)
 
         val formatter: HelpFormatter = HelpFormatter()
-        if (cmd.args.isEmpty() || (cmd.args.size == 1 && cmd.hasOption("h"))) {
+        if ((cmd.args.isEmpty() && cmd.options.isEmpty()) || (cmd.options.size == 1 && cmd.hasOption("h"))) {
             formatter.printHelp("sos [title] [option...]", options);
             exitProcess(0)
         }
@@ -30,7 +30,8 @@ fun main(args: Array<String>) {
         val varboseFlag: Boolean = cmd.hasOption("v")
         if (varboseFlag) showArgs(cmd)
 
-        val inTitle: String = cmd.args[0]
+        val inTitle: String = if (cmd.args.isNotEmpty()) cmd.args[0]
+        else throw IllegalArgumentException("Title is required")
 
         val params: SOParams = buildParams(inTitle, cmd)
         val query: Query<SOParams> = SOQuery(params)
@@ -59,12 +60,15 @@ fun main(args: Array<String>) {
                 for (item in itemsObj.items) {
                     println("[${item.question_id}][${item.title}][${item.link}]")
                 }
-                println("Total: ${itemsObj.items.size} quiestions.")
+                println("Total: ${itemsObj.items.size} questions.")
             }
         }
 
         exitProcess(0)
 
+    } catch (e: IllegalArgumentException) {
+        println(e.message)
+        exitProcess(1)
     } catch (e: ParseException) {
         print("Unknown arguments: ")
         for (arg in args) print("$arg ")

@@ -156,6 +156,25 @@ class AppTest {
         main(args)
     }
 
+    @Test fun requiredArgumentsErrorWithOptionC() {
+        exit.expectSystemExitWithStatus(1)
+        val args: Array<String> = arrayOf(
+                "-c"
+        )
+
+        main(args)
+    }
+
+    @Test fun requiredArgumentsErrorWithOptionHandC() {
+        exit.expectSystemExitWithStatus(1)
+        val args: Array<String> = arrayOf(
+                "-h",
+                "-c"
+        )
+
+        main(args)
+    }
+
     @Test fun parseError() {
         exit.expectSystemExitWithStatus(1)
         val args: Array<String> = arrayOf(

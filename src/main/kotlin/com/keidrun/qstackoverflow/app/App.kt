@@ -34,7 +34,7 @@ fun main(args: Array<String>) {
         else throw IllegalArgumentException("Title is required")
 
         val params: SOParams = buildParams(inTitle, cmd)
-        val query: Query<SOParams> = SOQuery(params)
+        val query: Query<SOParams, String> = SOQuery(params)
 
         if (varboseFlag) {
             println("url:")

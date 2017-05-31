@@ -13,7 +13,7 @@ class SOQueryTest {
         var params: SOParams = SOParams("rule", "kotlin")
         params.page = 1
         params.pageSize = 10
-        val sut: Query<SOParams> = SOQuery(params)
+        val sut: Query<SOParams, String> = SOQuery(params)
 
         val actual: String = sut.search(params)
 

@@ -8,10 +8,10 @@ package com.keidrun.qstackoverflow.lib
  *
  * @author Keid
  */
-interface Query<P> {
+interface Query<P, R> {
 
     var url: String
 
-    fun search(params: P): String
+    fun search(params: P): R
 
 }

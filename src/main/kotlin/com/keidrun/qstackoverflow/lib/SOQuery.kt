@@ -12,7 +12,7 @@ import java.nio.charset.StandardCharsets
  *
  * @author Keid
  */
-class SOQuery(params: SOParams, val apiVersion: String) : Query<SOParams> {
+class SOQuery(params: SOParams, val apiVersion: String) : Query<SOParams, String> {
 
     constructor(params: SOParams) : this(params, "2.2")
 
